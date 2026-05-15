@@ -158,6 +158,32 @@ app.get('/control/state', async (req, res) => {
   } catch (err) { res.status(500).json({ success: false, error: err.message }); }
 });
 
+// ── GET /control/air-pump ─────────────────────────────────────
+// Returns the current commanded air pump value only
+app.get('/control/air-pump', async (req, res) => {
+  try {
+    const doc = await ActuatorState.findOne({ device_id: 'main' }).lean();
+    res.json({
+      success:        true,
+      air_pump_value: doc ? doc.air_pump_value : 0,
+      updated_at:     doc ? doc.updated_at     : null,
+    });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
+// ── GET /control/water-pump ───────────────────────────────────
+// Returns the current commanded water pump value only
+app.get('/control/water-pump', async (req, res) => {
+  try {
+    const doc = await ActuatorState.findOne({ device_id: 'main' }).lean();
+    res.json({
+      success:          true,
+      water_pump_value: doc ? doc.water_pump_value : 0,
+      updated_at:       doc ? doc.updated_at       : null,
+    });
+  } catch (err) { res.status(500).json({ success: false, error: err.message }); }
+});
+
 // ── POST /sensors/reading ─────────────────────────────────────
 // Body: { voltage, current, air_pressure, water_pressure, temperature, flow_rate }
 app.post('/sensors/reading', async (req, res) => {
@@ -276,7 +302,9 @@ app.get('/', (_req, res) => res.json({
   endpoints: {
     'GET    /health':               'Server + DB health',
     'POST   /control/air-pump':     'Set air pump 0-100  { value }',
+    'GET    /control/air-pump':     'Read current air pump value',
     'POST   /control/water-pump':   'Set water pump 0-100  { value }',
+    'GET    /control/water-pump':   'Read current water pump value',
     'POST   /control/valve':        'Set valve  { state: open|closed }',
     'GET    /control/state':        'Read current actuator state',
     'POST   /sensors/reading':      'Ingest sensor snapshot (6 fields)',
