@@ -1,18 +1,14 @@
 {
   "name": "pumpctrl-api",
-  "version": "1.0.0",
-  "main": "server.js",
+  "version": "2.0.0",
+  "main": "api/index.js",
   "scripts": {
-    "start": "node api/server.js",
-    "dev":   "nodemon api/server.js"
+    "start": "node api/index.js",
+    "dev":   "nodemon api/index.js"
   },
   "dependencies": {
     "cors":     "^2.8.5",
-    "dotenv":   "^16.4.5",
     "express":  "^4.19.2",
     "mongoose": "^8.4.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4"
   }
 }
